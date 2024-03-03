@@ -3,10 +3,10 @@ import fs from "fs";
 import nodemailer from "nodemailer";
 import {Op} from "sequelize";
 
-import {Task} from "../db";
-import utils from "../utils";
+import {Task} from "../db.js";
+import * as utils from "../utils.js";
 
-module.exports.getAll = async (req, res, next) => {
+export const getAll = async (req, res, next) => {
     try {
         const tasks = await Task.findAll();
 
@@ -18,7 +18,7 @@ module.exports.getAll = async (req, res, next) => {
     }
 };
 
-module.exports.getOne = async (req, res, next) => {
+export const getOne = async (req, res, next) => {
     try {
         const id = req.params.id;
 
@@ -34,7 +34,7 @@ module.exports.getOne = async (req, res, next) => {
     }
 };
 
-module.exports.create = async (req, res, next) => {
+export const create = async (req, res, next) => {
     try {
         const task = req.body.task;
 
@@ -52,7 +52,7 @@ module.exports.create = async (req, res, next) => {
     }
 };
 
-module.exports.update = async (req, res, next) => {
+export const update = async (req, res, next) => {
     try {
         const id = req.body.id;
         const task = req.body.task;
@@ -74,7 +74,7 @@ module.exports.update = async (req, res, next) => {
     }
 };
 
-module.exports.delete = async (req, res, next) => {
+export const remove = async (req, res, next) => {
     try {
         const id = req.body.id;
 
@@ -92,7 +92,7 @@ module.exports.delete = async (req, res, next) => {
     }
 };
 
-module.exports.updatePicture = (req, res, next) => {
+export const updatePicture = (req, res, next) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
         const id = fields.id;
@@ -136,7 +136,7 @@ module.exports.updatePicture = (req, res, next) => {
     });
 };
 
-module.exports.sendEmail = async (req, res, next) => {
+export const sendEmail = async (req, res, next) => {
     try {
         const id = req.body.id;
         const result = await Task.findOne({

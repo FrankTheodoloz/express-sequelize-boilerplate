@@ -3,8 +3,8 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import taskRoute from "./routes/taskRoute";
-import userRoute from "./routes/userRoute";
+import * as taskRoute from "./routes/taskRoute.js";
+import * as userRoute from "./routes/userRoute.js";
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.get('/', (req, res, next) => {
         return next(err);
     }
 });
-app.use([taskRoute, userRoute]); // you can add more routes in this array
+app.use([taskRoute.router, userRoute.router]); // you can add more routes in this array
 
 //404 error
 app.get('*', function (req, res) {

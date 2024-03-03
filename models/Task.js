@@ -1,6 +1,6 @@
 import {DataTypes} from "sequelize";
 
-module.exports.TaskModel = (sequelize) => {
+export const TaskModel = (sequelize) => {
     return sequelize.define('Task', {
         id: {
             type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false,

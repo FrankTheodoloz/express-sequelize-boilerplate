@@ -2,7 +2,7 @@ import yup from "yup";
 import jwt from "jsonwebtoken";
 import {Op} from "sequelize";
 
-import {User} from "../db";
+import {User} from "../db.js";
 
 let schemaSignup = yup.object().shape({
     email: yup
@@ -14,7 +14,7 @@ let schemaSignup = yup.object().shape({
         .min(6, 'Please enter minimum 6 characters'),
 });
 
-module.exports.validationSignup = (req, res, next) => {
+export const validationSignup = (req, res, next) => {
     schemaSignup
         .validate({
             email: req.body.email, password: req.body.password,
@@ -25,7 +25,7 @@ module.exports.validationSignup = (req, res, next) => {
         .catch(err => next(err));
 };
 
-module.exports.isUserExistsSignup = async (req, res, next) => {
+export const isUserExistsSignup = async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {email: req.body.email},
@@ -53,7 +53,7 @@ let schemaLogin = yup.object().shape({
         .min(6, 'Please enter minimum 6 characters'),
 });
 
-module.exports.validateLogin = (req, res, next) => {
+export const validateLogin = (req, res, next) => {
     schemaLogin
         .validate({
             email: req.body.email, password: req.body.password,
@@ -62,7 +62,7 @@ module.exports.validateLogin = (req, res, next) => {
         .catch(err => next(err));
 };
 
-module.exports.authenticateToken = (req, res, next) => {
+export const authenticateToken = (req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
         // verifies secret and checks if the token is expired
@@ -94,7 +94,7 @@ let schemaUpdateProfile = yup.object().shape({
         .email('Please enter valid Email'),
 });
 
-module.exports.validationUpdateProfile = (req, res, next) => {
+export const validationUpdateProfile = (req, res, next) => {
     schemaUpdateProfile
         .validate({
             first_name: req.body.first_name, last_name: req.body.last_name, bio: req.body.bio, email: req.body.email,
@@ -103,7 +103,7 @@ module.exports.validationUpdateProfile = (req, res, next) => {
         .catch(err => next(err));
 };
 
-module.exports.isUserExistsUpdate = async (req, res, next) => {
+export const isUserExistsUpdate = async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {email: req.body.email, id: {[Op.ne]: req.user.id}},
@@ -132,7 +132,7 @@ let schemaChangePassword = yup.object().shape({
         .oneOf([yup.ref('new_password'), null], 'New password and repeat password mismatch'),
 });
 
-module.exports.validationChangePassword = (req, res, next) => {
+export const validationChangePassword = (req, res, next) => {
     schemaChangePassword
         .validate({
             new_password: req.body.new_password, repeat_new_password: req.body.repeat_new_password,
@@ -148,14 +148,14 @@ let schemaForgotPassword = yup.object().shape({
         .email('Please enter valid Email'),
 });
 
-module.exports.validationForgotPassword = (req, res, next) => {
+export const validationForgotPassword = (req, res, next) => {
     schemaForgotPassword
         .validate({email: req.body.email}, {abortEarly: false})
         .then(() => next())
         .catch(err => next(err));
 };
 
-module.exports.isEmailRegistered = async (req, res, next) => {
+export const isEmailRegistered = async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {email: req.body.email},
@@ -186,7 +186,7 @@ let schemaResetPassword = yup.object().shape({
     token: yup.string().required('Reset password token not found'),
 });
 
-module.exports.validationResetPassword = (req, res, next) => {
+export const validationResetPassword = (req, res, next) => {
     schemaResetPassword
         .validate({
             new_password: req.body.new_password,
@@ -197,7 +197,7 @@ module.exports.validationResetPassword = (req, res, next) => {
         .catch(err => next(err));
 };
 
-module.exports.isResetTokenValid = async (req, res, next) => {
+export const isResetTokenValid = async (req, res, next) => {
     try {
         const user = await User.findOne({
             where: {token: req.body.token},

@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import {Op} from "sequelize";
 
-import {User} from "../db";
+import {User} from "../db.js";
 
-module.exports.signUp = async (req, res, next) => {
+export const signUp = async (req, res, next) => {
     try {
         const email = req.body.email;
 
@@ -44,7 +44,7 @@ module.exports.signUp = async (req, res, next) => {
     }
 };
 
-module.exports.signUpVerify = async (req, res, next) => {
+export const signUpVerify = async (req, res, next) => {
     try {
         const token = req.params.token;
 
@@ -71,7 +71,7 @@ module.exports.signUpVerify = async (req, res, next) => {
     }
 };
 
-module.exports.login = async (req, res, next) => {
+export const login = async (req, res, next) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -110,7 +110,7 @@ module.exports.login = async (req, res, next) => {
     }
 };
 
-module.exports.getLoggedInUser = (req, res, next) => {
+export const getLoggedInUser = (req, res, next) => {
     const token = req.headers.authorization;
 
     if (token) {
@@ -131,7 +131,7 @@ module.exports.getLoggedInUser = (req, res, next) => {
     }
 };
 
-module.exports.updateProfile = async (req, res, next) => {
+export const updateProfile = async (req, res, next) => {
     try {
         const id = req.user.id;
         const first_name = req.body.first_name;
@@ -153,7 +153,7 @@ module.exports.updateProfile = async (req, res, next) => {
     }
 };
 
-module.exports.changePassword = (req, res, next) => {
+export const changePassword = (req, res, next) => {
     try {
         const id = req.user.id;
 
@@ -175,7 +175,7 @@ module.exports.changePassword = (req, res, next) => {
     }
 };
 
-module.exports.forgotPassword = async (req, res, next) => {
+export const forgotPassword = async (req, res, next) => {
     try {
         const email = req.body.email;
         const token = crypto.randomBytes(16).toString('hex');
@@ -209,7 +209,7 @@ module.exports.forgotPassword = async (req, res, next) => {
     }
 };
 
-module.exports.forgotPasswordVerify = async (req, res, next) => {
+export const forgotPasswordVerify = async (req, res, next) => {
     try {
         const token = req.params.token;
         const user = await User.findOne({
@@ -230,7 +230,7 @@ module.exports.forgotPasswordVerify = async (req, res, next) => {
     }
 };
 
-module.exports.resetPassword = async (req, res, next) => {
+export const resetPassword = async (req, res, next) => {
     try {
         const token = req.body.token;
 

@@ -1,7 +1,7 @@
 import {Sequelize} from "sequelize";
 
-import {TaskModel} from "./models/Task";
-import {UserModel} from "./models/User";
+import {TaskModel} from "./models/Task.js";
+import {UserModel} from "./models/User.js";
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: 'localhost', dialect: 'mysql' /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */,
@@ -16,9 +16,9 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     }
 })();
 
-// Create Models
-const Task = TaskModel(sequelize);
-const User = UserModel(sequelize);
+// instantiate models
+export const Task = TaskModel(sequelize);
+export const User = UserModel(sequelize);
 
 if (process.env.MIGRATE_DB === 'TRUE') {
     sequelize.sync().then(() => {
@@ -26,7 +26,3 @@ if (process.env.MIGRATE_DB === 'TRUE') {
         process.exit(0);
     });
 }
-
-module.exports = {
-    Task, User,
-};

@@ -10,7 +10,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 (async () => {
     try {
         await sequelize.authenticate();
-        console.log('💾 Database connection has been established successfully.');
+        console.log('Database connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
@@ -24,7 +24,6 @@ export const User = UserModel(sequelize);
 // @see https://sequelize.org/docs/v6/core-concepts/model-basics/#model-synchronization
 if (process.env.MIGRATE_DB === 'TRUE') {
     sequelize.sync().then(() => {
-        console.log(`All tables synced!`);
         process.exit(0);
     });
 }

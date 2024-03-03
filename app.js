@@ -34,14 +34,12 @@ app.use([taskRoute.router, userRoute.router]); // you can add more routes in thi
 // 404 error
 app.get('*', function (req, res) {
     res.status(404).json({
-        message: 'What?? 🙅',
+        message: '404 Page not found error',
     });
 });
 
 // error handling middleware
 app.use((err, req, res, next) => {
-    console.log('🐞 Error Handler');
-
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 
@@ -52,4 +50,4 @@ app.use((err, req, res, next) => {
 
 // Run the server
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`🐹 app listening on http://localhost:${port}`));
+app.listen(port, () => console.log(`listening on http://localhost:${port}`));

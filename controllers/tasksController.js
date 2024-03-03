@@ -1,4 +1,3 @@
-import {config} from "dotenv";
 import formidable from "formidable";
 import fs from "fs";
 import nodemailer from "nodemailer";
@@ -7,7 +6,6 @@ import {Op} from "sequelize";
 import {Task} from "../db";
 import utils from "../utils";
 
-config();
 // Get All
 module.exports.getAll = async (req, res, next) => {
     try {

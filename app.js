@@ -1,5 +1,4 @@
 import cors from "cors";
-import {config} from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -7,7 +6,6 @@ import morgan from "morgan";
 import taskRoute from "./routes/taskRoute";
 import userRoute from "./routes/userRoute";
 
-config();
 const app = express();
 
 app.use(helmet());

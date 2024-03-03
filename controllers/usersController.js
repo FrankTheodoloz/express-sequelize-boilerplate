@@ -1,13 +1,11 @@
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import {config} from "dotenv";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import {Op} from "sequelize";
 
 import {User} from "../db";
 
-config();
 // SignUp
 module.exports.signUp = async (req, res, next) => {
     try {

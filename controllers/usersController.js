@@ -14,12 +14,10 @@ module.exports.signUp = async (req, res, next) => {
         // encrypt password
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
-        const password = hash;
-
         const token = crypto.randomBytes(16).toString('hex');
 
         const record = await User.create({
-            email: email, password: password, token: token,
+            email: email, password: hash, token: token,
         });
 
         // Send the email
@@ -181,11 +179,10 @@ module.exports.changePassword = (req, res, next) => {
 
         // encrypt password
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(req.body.new_password, salt);
-        const new_password = hash;
+        const new_hash = bcrypt.hashSync(req.body.new_password, salt);
 
         const result = User.update({
-            password: new_password,
+            password: new_hash,
         }, {
             where: {
                 id: {
@@ -274,12 +271,11 @@ module.exports.resetPassword = async (req, res, next) => {
     try {
         const token = req.body.token;
         // encrypt password
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(req.body.new_password, salt);
-        const new_password = hash;
+        const salt = bcrypt.genSalwtSync(10);
+        const new_hash = bcrypt.hashSync(req.body.new_password, salt);
 
         const result = await User.update({
-            password: new_password, token: '',
+            password: new_hash, token: '',
         }, {
             where: {
                 token: {

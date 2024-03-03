@@ -122,9 +122,9 @@ module.exports.updatePicture = (req, res, next) => {
             } else {
                 const newFileName = utils.timestampFilename(files.filetoupload.name);
 
-                const oldpath = files.filetoupload.path;
-                const newpath = __basedir + '/public/uploads/pictures/' + newFileName;
-                fs.rename(oldpath, newpath, function (err) {
+                const oldPath = files.filetoupload.path;
+                const newPath = __basedir + '/public/uploads/pictures/' + newFileName;
+                fs.rename(oldPath, newPath, function (err) {
                     if (err) {
                         return next(err);
                     }

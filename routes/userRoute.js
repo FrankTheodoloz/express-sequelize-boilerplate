@@ -1,24 +1,21 @@
-const {Router} = require('express');
-const router = Router();
+import {Router} from "express";
 
-// Import Middlewares
-const {
-    validationSignup,
-    isUserExistsSignup,
-    validateLogin,
+import usersController from "../controllers/usersController";
+import {
     authenticateToken,
-    validationUpdateProfile,
+    isEmailRegistered,
+    isResetTokenValid,
+    isUserExistsSignup,
     isUserExistsUpdate,
+    validateLogin,
     validationChangePassword,
     validationForgotPassword,
-    isEmailRegistered,
     validationResetPassword,
-    isResetTokenValid,
-} = require('../middlewares/userMiddleware');
+    validationSignup,
+    validationUpdateProfile
+} from "../middlewares/userMiddleware";
 
-// Import Controllers
-const usersController = require('../controllers/usersController');
-
+const router = Router();
 router.post('/user/signup', [validationSignup, isUserExistsSignup], usersController.signUp); // sends verification link to user
 router.get('/user/signup/verify/:token', usersController.signUpVerify); // verify user link when clicked
 router.post('/user/login', [validateLogin], usersController.login);

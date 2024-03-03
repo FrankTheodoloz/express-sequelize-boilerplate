@@ -1,4 +1,4 @@
-const {DataTypes} = require('sequelize');
+import {DataTypes} from "sequelize";
 
 module.exports.TaskModel = (sequelize) => {
     return sequelize.define('Task', {

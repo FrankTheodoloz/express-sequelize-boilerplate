@@ -1,14 +1,13 @@
-require('dotenv').config();
-// Load model
-const {User} = require('../db');
-const {Op} = require('sequelize');
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import {config} from "dotenv";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import {Op} from "sequelize";
 
-const utils = require('../utils');
-const nodemailer = require('nodemailer');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
+import {User} from "../db";
 
+config();
 // SignUp
 module.exports.signUp = async (req, res, next) => {
     try {

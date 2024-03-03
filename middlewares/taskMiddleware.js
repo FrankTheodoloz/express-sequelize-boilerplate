@@ -1,6 +1,7 @@
-let yup = require('yup');
-const {Task} = require('../db');
-const {Op} = require('sequelize');
+import yup from "yup";
+import {Op} from "sequelize";
+
+import {Task} from "../db";
 
 // ========================================================================
 

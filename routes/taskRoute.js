@@ -1,14 +1,11 @@
-const {Router} = require('express');
+import {Router} from "express";
+
+import tasksController from "../controllers/tasksController";
+import {
+    isTaskExistsCreate, isTaskExistsUpdate, validationCreate, validationDelete, validationUpdate
+} from "../middlewares/taskMiddleware";
+
 const router = Router();
-
-// Import Middlewares
-const {
-    validationCreate, isTaskExistsCreate, validationUpdate, isTaskExistsUpdate, validationDelete,
-} = require('../middlewares/taskMiddleware');
-
-// Import Controllers
-const tasksController = require('../controllers/tasksController');
-
 router.get('/tasks', tasksController.getAll);
 router.get('/tasks/:id', tasksController.getOne);
 router.post('/tasks', [validationCreate, isTaskExistsCreate], tasksController.create);

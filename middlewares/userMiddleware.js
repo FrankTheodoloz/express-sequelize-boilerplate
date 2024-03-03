@@ -1,7 +1,8 @@
-let yup = require('yup');
-const jwt = require('jsonwebtoken');
-const {User} = require('../db');
-const {Op} = require('sequelize');
+import yup from "yup";
+import jwt from "jsonwebtoken";
+import {Op} from "sequelize";
+
+import {User} from "../db";
 
 // ========================================================================
 

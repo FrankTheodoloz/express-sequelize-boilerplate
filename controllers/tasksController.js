@@ -1,13 +1,13 @@
-require('dotenv').config();
-// Load model
-const {Task} = require('../db');
-const {Op} = require('sequelize');
+import {config} from "dotenv";
+import formidable from "formidable";
+import fs from "fs";
+import nodemailer from "nodemailer";
+import {Op} from "sequelize";
 
-const utils = require('../utils');
-const nodemailer = require('nodemailer');
-var formidable = require('formidable');
-var fs = require('fs');
+import {Task} from "../db";
+import utils from "../utils";
 
+config();
 // Get All
 module.exports.getAll = async (req, res, next) => {
     try {

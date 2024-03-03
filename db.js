@@ -1,5 +1,10 @@
-require('dotenv').config();
-const {Sequelize} = require('sequelize');
+import {config} from "dotenv";
+import {Sequelize} from "sequelize";
+
+import {TaskModel} from "./models/Task";
+import {UserModel} from "./models/User";
+
+config();
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: 'localhost', dialect: 'mysql' /* 'mysql' | 'mariadb' | 'postgres' | 'mssql' */,
@@ -15,10 +20,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 })();
 
 // Create Models
-const {TaskModel} = require('./models/Task');
 const Task = TaskModel(sequelize);
-
-const {UserModel} = require('./models/User');
 const User = UserModel(sequelize);
 
 if (process.env.MIGRATE_DB == 'TRUE') {

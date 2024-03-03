@@ -16,8 +16,6 @@ module.exports.UserModel = (sequelize) => {
             type: DataTypes.STRING, allowNull: false,
         }, is_verified: {
             type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false,
-        }, password: {
-            type: DataTypes.STRING, allowNull: true,
         }, token: {
             type: DataTypes.STRING, allowNull: true,
         },

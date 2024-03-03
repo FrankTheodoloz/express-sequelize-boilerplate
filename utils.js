@@ -1,8 +1,8 @@
 import path from "path";
 
 module.exports.timestampFilename = (filename) => {
-    var extension = path.extname(filename);
-    var nameWithoutExt = filename.split('.').slice(0, -1).join('.');
-    var newFileName = `${nameWithoutExt}_${Date.now()}${extension}`;
+    const extension = path.extname(filename);
+    const nameWithoutExt = filename.split('.').slice(0, -1).join('.');
+    const newFileName = `${nameWithoutExt}_${Date.now()}${extension}`;
     return newFileName;
 };

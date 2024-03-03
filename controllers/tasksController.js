@@ -107,7 +107,7 @@ module.exports.delete = async (req, res, next) => {
 
 // Update Picture
 module.exports.updatePicture = (req, res, next) => {
-    var form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
         const id = fields.id;
 
@@ -122,10 +122,10 @@ module.exports.updatePicture = (req, res, next) => {
                 var err = new Error('Please select file size < 2mb');
                 return next(err);
             } else {
-                var newFileName = utils.timestampFilename(files.filetoupload.name);
+                const newFileName = utils.timestampFilename(files.filetoupload.name);
 
-                var oldpath = files.filetoupload.path;
-                var newpath = __basedir + '/public/uploads/pictures/' + newFileName;
+                const oldpath = files.filetoupload.path;
+                const newpath = __basedir + '/public/uploads/pictures/' + newFileName;
                 fs.rename(oldpath, newpath, function (err) {
                     if (err) {
                         return next(err);
@@ -166,13 +166,13 @@ module.exports.sendEmail = async (req, res, next) => {
             },
         });
 
-        var transporter = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST, port: process.env.MAIL_POST, auth: {
                 user: process.env.MAIL_AUTH_USER, pass: process.env.MAIL_AUTH_PASS,
             },
         });
 
-        var mailOptions = {
+        const mailOptions = {
             from: process.env.MAIL_FROM, to: 'test@example.com', subject: 'Test email', html: `Hi there! <br/><br/>
 			This is just a test email from boilerplate code<br/><br/>
 			Your task is: ${result.task}<br/><br/>

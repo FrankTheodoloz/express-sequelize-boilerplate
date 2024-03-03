@@ -89,7 +89,7 @@ module.exports.validateLogin = (req, res, next) => {
 // ========================================================================
 // Authenticate User Logged in
 module.exports.authenticateToken = (req, res, next) => {
-    var token = req.headers.authorization;
+    const token = req.headers.authorization;
     if (token) {
         // verifies secret and checks if the token is expired
         jwt.verify(token.replace(/^Bearer\s/, ''), process.env.AUTH_SECRET, (err, decoded) => {

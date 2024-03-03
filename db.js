@@ -20,6 +20,8 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 export const Task = TaskModel(sequelize);
 export const User = UserModel(sequelize);
 
+// sync models
+// @see https://sequelize.org/docs/v6/core-concepts/model-basics/#model-synchronization
 if (process.env.MIGRATE_DB === 'TRUE') {
     sequelize.sync().then(() => {
         console.log(`All tables synced!`);

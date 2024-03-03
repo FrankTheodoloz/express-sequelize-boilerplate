@@ -20,8 +20,9 @@ export const UserModel = (sequelize) => {
             type: DataTypes.STRING, allowNull: true,
         },
     }, {
-        // Other model options go here
-        freezeTableName: true, //tableName: 'tablename',
+        //see https://sequelize.org/docs/v6/core-concepts/model-basics/#table-name-inference
+        freezeTableName: true, // use model name
+        // tableName: 'Users'
         timestamps: true,
     });
 };

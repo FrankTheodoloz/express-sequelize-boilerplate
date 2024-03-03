@@ -12,8 +12,9 @@ export const TaskModel = (sequelize) => {
             type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false,
         },
     }, {
-        // Other model options go here
-        freezeTableName: true, //tableName: 'tablename',
+        //see https://sequelize.org/docs/v6/core-concepts/model-basics/#table-name-inference
+        freezeTableName: true, // use model name
+        // tableName: 'Tasks'
         timestamps: true,
     });
 };

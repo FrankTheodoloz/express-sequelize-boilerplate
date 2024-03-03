@@ -31,14 +31,14 @@ app.get('/', (req, res, next) => {
 });
 app.use([taskRoute.router, userRoute.router]); // you can add more routes in this array
 
-//404 error
+// 404 error
 app.get('*', function (req, res) {
     res.status(404).json({
         message: 'What?? 🙅',
     });
 });
 
-//An error handling middleware
+// error handling middleware
 app.use((err, req, res, next) => {
     console.log('🐞 Error Handler');
 

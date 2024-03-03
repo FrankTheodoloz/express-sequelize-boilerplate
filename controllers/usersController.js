@@ -6,7 +6,6 @@ import {Op} from "sequelize";
 
 import {User} from "../db";
 
-// SignUp
 module.exports.signUp = async (req, res, next) => {
     try {
         const email = req.body.email;
@@ -27,14 +26,12 @@ module.exports.signUp = async (req, res, next) => {
             },
         });
         const verificationLink = `${process.env.CLIENT_URL}/signup-verify/?token=${token}`;
-
         const mailOptions = {
             from: process.env.MAIL_FROM, to: email, subject: 'Thank you for signing up', html: `Congratulations!<br/><br/>
         You have successfully signed up. Please click the link below to verify your account:<br/>
         <a href="${verificationLink}" target="_blank">Verify email</a><br/><br/>
         Thank you.`,
         };
-
         await transporter.sendMail(mailOptions);
 
         return res.json({
@@ -47,27 +44,20 @@ module.exports.signUp = async (req, res, next) => {
     }
 };
 
-// Verify Signup Link
 module.exports.signUpVerify = async (req, res, next) => {
     try {
         const token = req.params.token;
+
         const user = await User.findOne({
-            where: {
-                token: token, is_verified: 0,
-            },
+            where: {token: token, is_verified: 0},
         });
 
         if (user) {
             const record = await User.update({
                 token: '', is_verified: 1,
             }, {
-                where: {
-                    id: {
-                        [Op.eq]: user.id,
-                    },
-                },
+                where: {id: {[Op.eq]: user.id,}},
             });
-
             return res.json({
                 status: 'success', result: user,
             });
@@ -81,21 +71,17 @@ module.exports.signUpVerify = async (req, res, next) => {
     }
 };
 
-// Login
 module.exports.login = async (req, res, next) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
 
         const user = await User.findOne({
-            where: {
-                email: email, is_verified: 1,
-            },
+            where: {email: email, is_verified: 1},
         });
 
         if (user) {
             const isMatched = await bcrypt.compare(password, user.password);
-
             if (isMatched === true) {
                 const userData = {
                     id: user.id,
@@ -124,9 +110,9 @@ module.exports.login = async (req, res, next) => {
     }
 };
 
-// Get Logged in user
 module.exports.getLoggedInUser = (req, res, next) => {
     const token = req.headers.authorization;
+
     if (token) {
         // verifies secret and checks if the token is expired
         jwt.verify(token.replace(/^Bearer\s/, ''), process.env.AUTH_SECRET, (err, decoded) => {
@@ -145,7 +131,6 @@ module.exports.getLoggedInUser = (req, res, next) => {
     }
 };
 
-// Update Profile
 module.exports.updateProfile = async (req, res, next) => {
     try {
         const id = req.user.id;
@@ -157,11 +142,7 @@ module.exports.updateProfile = async (req, res, next) => {
         const result = User.update({
             first_name: first_name, last_name: last_name, bio: bio, email: email,
         }, {
-            where: {
-                id: {
-                    [Op.eq]: id,
-                },
-            },
+            where: {id: {[Op.eq]: id,}},
         });
 
         return res.json({
@@ -172,7 +153,6 @@ module.exports.updateProfile = async (req, res, next) => {
     }
 };
 
-// Change Password
 module.exports.changePassword = (req, res, next) => {
     try {
         const id = req.user.id;
@@ -184,11 +164,7 @@ module.exports.changePassword = (req, res, next) => {
         const result = User.update({
             password: new_hash,
         }, {
-            where: {
-                id: {
-                    [Op.eq]: id,
-                },
-            },
+            where: {id: {[Op.eq]: id}},
         });
 
         return res.json({
@@ -199,7 +175,6 @@ module.exports.changePassword = (req, res, next) => {
     }
 };
 
-// Forgot Password
 module.exports.forgotPassword = async (req, res, next) => {
     try {
         const email = req.body.email;
@@ -208,11 +183,7 @@ module.exports.forgotPassword = async (req, res, next) => {
         const result = await User.update({
             token: token,
         }, {
-            where: {
-                email: {
-                    [Op.eq]: email,
-                },
-            },
+            where: {email: {[Op.eq]: email}},
         });
 
         // Send the email
@@ -221,16 +192,13 @@ module.exports.forgotPassword = async (req, res, next) => {
                 user: process.env.MAIL_AUTH_USER, pass: process.env.MAIL_AUTH_PASS,
             },
         });
-
         const verificationLink = `${process.env.CLIENT_URL}/forgot-password-verify/?token=${token}`;
-
         const mailOptions = {
             from: process.env.MAIL_FROM, to: email, subject: 'Reset password', html: `Hi there! <br/><br/>
 			Please click on the link below to reset your password:<br/>
 			<a href="${verificationLink}" target="_blank">${verificationLink}</a><br/><br/>
 			Thank You.`,
         };
-
         await transporter.sendMail(mailOptions);
 
         return res.json({
@@ -241,15 +209,11 @@ module.exports.forgotPassword = async (req, res, next) => {
     }
 };
 
-// Forgot Password Verify Link
 module.exports.forgotPasswordVerify = async (req, res, next) => {
     try {
         const token = req.params.token;
-
         const user = await User.findOne({
-            where: {
-                token: token,
-            },
+            where: {token: token},
         });
 
         if (user) {
@@ -266,10 +230,10 @@ module.exports.forgotPasswordVerify = async (req, res, next) => {
     }
 };
 
-// Reset Password
 module.exports.resetPassword = async (req, res, next) => {
     try {
         const token = req.body.token;
+
         // encrypt password
         const salt = bcrypt.genSalwtSync(10);
         const new_hash = bcrypt.hashSync(req.body.new_password, salt);
@@ -277,11 +241,7 @@ module.exports.resetPassword = async (req, res, next) => {
         const result = await User.update({
             password: new_hash, token: '',
         }, {
-            where: {
-                token: {
-                    [Op.eq]: token,
-                },
-            },
+            where: {token: {[Op.eq]: token}},
         });
 
         return res.json({

@@ -6,10 +6,10 @@ import {Op} from "sequelize";
 import {Task} from "../db";
 import utils from "../utils";
 
-// Get All
 module.exports.getAll = async (req, res, next) => {
     try {
         const tasks = await Task.findAll();
+
         res.json({
             status: 'success', result: tasks,
         });
@@ -18,15 +18,14 @@ module.exports.getAll = async (req, res, next) => {
     }
 };
 
-// Get One
 module.exports.getOne = async (req, res, next) => {
     try {
         const id = req.params.id;
+
         const task = await Task.findOne({
-            where: {
-                id: id,
-            },
+            where: {id: id,},
         });
+
         res.json({
             status: 'success', result: task,
         });
@@ -35,10 +34,10 @@ module.exports.getOne = async (req, res, next) => {
     }
 };
 
-// Create
 module.exports.create = async (req, res, next) => {
     try {
         const task = req.body.task;
+
         const record = await Task.create({
             task: task,
         });
@@ -53,7 +52,6 @@ module.exports.create = async (req, res, next) => {
     }
 };
 
-// Update
 module.exports.update = async (req, res, next) => {
     try {
         const id = req.body.id;
@@ -63,11 +61,7 @@ module.exports.update = async (req, res, next) => {
         const record = await Task.update({
             task: task, status: status,
         }, {
-            where: {
-                id: {
-                    [Op.eq]: id,
-                },
-            },
+            where: {id: {[Op.eq]: id,}},
         });
 
         res.json({
@@ -80,17 +74,12 @@ module.exports.update = async (req, res, next) => {
     }
 };
 
-// Delete
 module.exports.delete = async (req, res, next) => {
     try {
         const id = req.body.id;
 
         const deleted = await Task.destroy({
-            where: {
-                id: {
-                    [Op.eq]: id,
-                },
-            },
+            where: {id: {[Op.eq]: id}},
         });
 
         res.json({
@@ -103,7 +92,6 @@ module.exports.delete = async (req, res, next) => {
     }
 };
 
-// Update Picture
 module.exports.updatePicture = (req, res, next) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
@@ -121,22 +109,16 @@ module.exports.updatePicture = (req, res, next) => {
                 return next(err);
             } else {
                 const newFileName = utils.timestampFilename(files.filetoupload.name);
-
                 const oldPath = files.filetoupload.path;
                 const newPath = __basedir + '/public/uploads/pictures/' + newFileName;
                 fs.rename(oldPath, newPath, function (err) {
                     if (err) {
                         return next(err);
                     }
-
                     Task.update({
                         picture: newFileName,
                     }, {
-                        where: {
-                            id: {
-                                [Op.eq]: id,
-                            },
-                        },
+                        where: {id: {[Op.eq]: id}},
                     })
                         .then((updated) => {
                             res.json({
@@ -154,29 +136,25 @@ module.exports.updatePicture = (req, res, next) => {
     });
 };
 
-// Send email
 module.exports.sendEmail = async (req, res, next) => {
     try {
         const id = req.body.id;
         const result = await Task.findOne({
-            where: {
-                id: id,
-            },
+            where: {id: id},
         });
 
+        // Send the email
         const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST, port: process.env.MAIL_POST, auth: {
                 user: process.env.MAIL_AUTH_USER, pass: process.env.MAIL_AUTH_PASS,
             },
         });
-
         const mailOptions = {
             from: process.env.MAIL_FROM, to: 'test@example.com', subject: 'Test email', html: `Hi there! <br/><br/>
 			This is just a test email from boilerplate code<br/><br/>
 			Your task is: ${result.task}<br/><br/>
 			Thank You.`,
         };
-
         await transporter.sendMail(mailOptions);
 
         res.json({

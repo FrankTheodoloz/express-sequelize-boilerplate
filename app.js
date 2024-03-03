@@ -15,9 +15,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/public')); // folder to upload files
+app.use(express.static('./public')); // folder to upload files
 
-global.__basedir = __dirname; // very important to define base directory of the project. this is useful while creating upload scripts
+global.__basedir = '.'; // very important to define base directory of the project. this is useful while creating upload scripts
 
 // Routes
 app.get('/', (req, res, next) => {
